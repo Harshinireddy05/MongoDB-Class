@@ -1,56 +1,25 @@
-const express = require('express')
+const router = require('express').Router()
 
-const router = express.Router()
+const productControllers = require('../controllers/productControllers') 
 
 //create
 
-router.post('/api/products', async (req, res) => {
-    await productModel.create({
-        product_name: req.body.product_name,
-        product_price: req.body.product_price,
-        isInStock: req.body.isInStock,
-        category: req.body.category
-    })
-
-    return res.status(201).json({message:"Product Created"})
-})
+router.post('/api/products', productControllers.createProduct);
 
 //get route
 
-router.get('/api/products', async (req, res) => {
-    
-    const allProducts = await productModel.find({isInStock:true})
-
-    return res.json(allProducts)
-
-})
+router.get('/api/products', productControllers.getAllProducts);
 
 //get product by ID
 
-router.get('/api/products/:id', async (req, res) => {
-        
-    const product = await productModel.findById(req.params.id)
-    
-    return res.json(product)
-    
-})
+router.get('/api/products/:id', productControllers.getById)
 
 
 // Update product
 
-router.put('/api/products/:id' , async(req , res)=>{
-
-    const updatedProduct = await productModel.findByIdAndUpdate(req.params.id , req.body)
-
-    return res.json(updatedProduct)
-})
+router.put('/api/products/:id' , productControllers.updateProduct)
 
 
 //Delete product
 
-router.delete('/api/products/:id' , async(req , res)=>{
-
-    const deletedProduct = await productModel.findByIdAndDelete(req.params.id)
-
-    return res.json(deletedProduct)
-})
+router.delete('/api/products/:id' , productControllers.deleteProduct)
